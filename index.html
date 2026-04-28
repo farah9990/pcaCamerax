@@ -2,85 +2,93 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>اكتشف مكونات الحاسب</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<!-- ✅ الخط -->
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap">
 
+<!-- ✅ TensorFlow -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+
+<!-- ✅ Teachable Machine -->
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 
 <style>
-    body {
-        margin: 0;
-        font-family: 'Cairo', sans-serif;
-        background: radial-gradient(circle at top, #0f172a, #020617);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;     /* ✅ مو بالمنتصف */
-        padding-top: 40px;           /* ✅ فراغ علوي جميل */
-        color: white;
-    }
+body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    min-height: 100vh;
 
-    /* ✅ الكرت */
-    .game-container {
-        width: 90%;
-        max-width: 420px;
-        background: #020617;
-        border-radius: 20px;
-        padding: 20px;
-        box-shadow:
-            0 0 30px rgba(34,211,238,0.25),
-            inset 0 0 0 1px rgba(34,211,238,0.3);
-        text-align: center;
-    }
+    display: flex;
+    justify-content: center;   /* ✅ توسيط أفقي */
+    align-items: center;       /* ✅ توسيط رأسي */
 
-    h1 {
-        font-size: 20px;
-        margin-bottom: 16px;
-    }
+    color: white;
+}
 
-    h1 span {
-        color: #22d3ee;
-    }
+/* ✅ الكرت بالوسط وكبير */
+.game-container {
+    width: 92%;
+    max-width: 480px;
+    background: #020617;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow:
+        0 0 32px rgba(34,211,238,0.25),
+        inset 0 0 0 1px rgba(34,211,238,0.3);
+    text-align: center;
+}
 
-    /* ✅ مربع الكاميرا */
+h1 {
+    font-size: 22px;
+    margin-bottom: 16px;
+}
+
+h1 span {
+    color: #22d3ee;
+}
+
+/* ✅ مربع الكاميرا الكبير */
+.camera-box {
+    width: 100%;
+    height: 380px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid #22d3ee;
+    margin-bottom: 14px;
+}
+
+.camera-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ✅ مربع الحالة */
+.status-box {
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid #22d3ee;
+    background: linear-gradient(90deg, #020617, #0f172a);
+    color: #22d3ee;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.hint {
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+/* ✅ تحسين إضافي للجوال الصغير */
+@media (max-width: 480px) {
     .camera-box {
-        width: 100%;
-        height: 320px;               /* ✅ حجم مريح */
-        border-radius: 16px;
-        overflow: hidden;
-        border: 2px solid #22d3ee;
-        margin-bottom: 12px;
+        height: 360px;
     }
-
-    .camera-box video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .status-box {
-        padding: 12px;
-        border-radius: 12px;
-        border: 1px solid #22d3ee;
-        background: linear-gradient(90deg, #020617, #0f172a);
-        color: #22d3ee;
-        font-size: 15px;
-        margin-bottom: 6px;
-    }
-
-    .hint {
-        font-size: 13px;
-        color: #94a3b8;
-    }
-
-    /* ✅ تحسين إضافي للجوال الصغير */
-    @media (max-width: 480px) {
-        .camera-box {
-            height: 360px;            /* أكبر شوي للجوال */
-        }
-    }
+}
 </style>
 </head>
 
@@ -125,7 +133,7 @@ async function init() {
 }
 
 async function loop() {
-    if (video.readyState === 4) {
+    if (video && video.readyState === 4) {
         const predictions = await model.predict(video);
 
         let best = predictions[0];
@@ -146,4 +154,3 @@ init();
 
 </body>
 </html>
-``
